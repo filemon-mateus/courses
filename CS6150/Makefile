@@ -7,6 +7,7 @@ HW= \
 	pdf/hw4.pdf \
 	pdf/hw5.pdf \
 	pdf/hw6.pdf \
+	pdf/hw7.pdf \
 
 .PHONY: all copy
 all: %(HW)
