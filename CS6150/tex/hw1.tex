@@ -18,15 +18,15 @@
               \begin{algorithmic}[1]
                 \Require{A min-heap with $n$ distinct keys in an array $A[1,\ldots,n]$, a value $x$, and an integer $k$.}
                 \Ensure{``yes'' if the $k$-th smallest key in the heap is smaller than $x$; ``no'' otherwise.}
-                \State $c \gets 0$ \Comment{counts the number of keys $a_c \leq x$; if $c = k$, then we're done!}
+                \State $c \gets 0$ \Comment{counts the number of keys $a_c < x$; if $c = k$, then we're done!}
                 \State $S \gets \varnothing$ \Comment{sets an empty stack for processing suitable keys}
                 \State $S.push(1)$ \Comment{commence at the root}
                 \While{$S.size() > 0$}
                   \State $i \gets S.pop()$
-                  \If{$i \leq A.size()$ \textbf{and} $A[i] \leq x$}
+                  \If{$i \leq A.size()$ \textbf{and} $A[i] < x$}
                     \State $c \gets c + 1$
                     \If{$c = k$}
-                      \State \Return ``no''
+                      \State \Return ``yes''
                     \EndIf
                     \State $l \gets 2i$
                     \State $r \gets 2i + 1$
@@ -39,9 +39,9 @@
                   \EndIf
                 \EndWhile
                 \If{$c < k$}
-                  \State \Return ``yes''
-                \Else
                   \State \Return ``no''
+                \Else
+                  \State \Return ``yes''
                 \EndIf
               \end{algorithmic}
             \end{algorithm}
@@ -50,7 +50,7 @@
 
         \autoref{alg:is-smaller} just counts, via iterative \textsc{dfs}, the number of keys
         less or equal to $x$ starting from the root. In the event that $k$ of those are
-        exhausted, it returns ``no''; otherwise, it returns ``yes''.
+        exhausted, it returns ``yes''; otherwise, it returns ``no''.
 
       \item
         In analyzing the runtime of \autoref{alg:is-smaller}, we notice that all lines are
