@@ -1,0 +1,123 @@
+% default base packages
+\ProvidesPackage{preamble}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{bold-extra}
+\usepackage{cancel}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage[bottom,hang,flushmargin]{footmisc}
+\usepackage{footnote}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage[hyphens]{url}
+\usepackage[breaklinks=true]{hyperref}
+\usepackage{lastpage}
+% \usepackage{pxfonts}
+% \usepackage{eulervm}
+\usepackage{mdframed}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{pgfplots}
+\usepackage{subcaption}
+\usepackage{thmtools}
+\usepackage{tikz}
+\usepackage{soul}
+\usepackage{subcaption}
+
+% useful stylistic settings for proofs, remarks, claims, and definitions
+\let\proof\relax\let\endproof\relax
+\mdfdefinestyle{blackbox}{
+  innertopmargin=8,
+  innerbottommargin=8,
+  linewidth=2,
+  topline=false,
+  leftline=true,
+  rightline=false,
+  bottomline=false,
+  linecolor=Black,
+  backgroundcolor=RedViolet!5!Gray!5,
+}
+\mdfdefinestyle{greenbox}{
+  innertopmargin=8,
+  innerbottommargin=8,
+  linewidth=2,
+  topline=false,
+  leftline=true,
+  rightline=false,
+  bottomline=false,
+  linecolor=ForestGreen,
+  backgroundcolor=ForestGreen!5,
+}
+\declaretheoremstyle[
+  headfont=\bfseries\color{Black},
+  bodyfont=\normalfont,
+  mdframed={style=blackbox},
+  headpunct={ --- },
+]{claim}
+\declaretheoremstyle[
+  headfont=\bfseries\color{ForestGreen!70!Black},
+  bodyfont=\normalfont,
+  mdframed={style=greenbox},
+  headpunct={ --- },
+]{remark}
+\declaretheoremstyle[
+  headfont=\itshape,
+  bodyfont=\normalfont,
+  postheadspace=.5em,
+  qed=$\square$,
+]{proof}
+
+% enumerate proofs, remarks, and claims by default
+\declaretheorem[style=proof,name=Proof,numbered=yes]{proof}
+\declaretheorem[style=claim,name=Claim,numbered=yes]{claim}
+\declaretheorem[style=remark,name=Remark,numbered=yes]{remark}
+\declaretheorem[style=remark,name=Definition,numbered=yes]{definition}
+
+% unenumerate proofs, remarks, and claims on "*" envs
+\declaretheorem[style=proof,name=Proof,numbered=no]{proof*}
+\declaretheorem[style=claim,name=Claim,numbered=no]{claim*}
+\declaretheorem[style=remark,name=Remark,numbered=no]{remark*}
+\declaretheorem[style=remark,name=Definition,numbered=no]{definition*}
+
+% useful macros
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\dsum}{\displaystyle\sum}
+\newcommand{\ceil}[1]{\lceil #1 \rceil}
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\algorithmautorefname}{Algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\algrenewcommand{\algorithmicprocedure}{\textbf{function}}
+\algrenewcommand{\algorithmiccomment}[1]{{\hfill\footnotesize\ttfamily\color{ForestGreen!80!Black} //\ #1}}
+\algnewcommand\algorithmicforeach{\textbf{for each}}
+\algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
+
+% useful general settings
+\setenumerate{itemsep=15pt}
+\captionsetup[figure]{
+  font=normalsize,
+  labelfont={bf},
+  name={Figure},
+  labelsep=period,
+}
+\hypersetup{
+  colorlinks,
+  linkcolor={red!50!black},
+  citecolor={green!50!black},
+  urlcolor={blue!80!black},
+}
+
+% personal custom header
+\newcommand{\header}[5]{
+  \pagestyle{fancy}
+  \lhead{#2}
+  \chead{#1~~---~~#4~~---~~#3}
+  \rhead{#5}
+  \cfoot{\thepage/\pageref{LastPage}}
+}

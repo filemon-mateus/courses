@@ -1,0 +1,249 @@
+\documentclass[10pt, letterpaper]{article}
+\input{preamble}
+
+\begin{document}
+\header{Filemon Mateus}{Introduction \& Background}{Homework \#\ 0}
+
+\begin{enumerate}
+  \item[\textbf{Q1.}]
+    \begin{remark*}
+      Suppose that $f$ and $g$ are functions whose domain and co-domain are subsets
+      of the real-numbers. Then $f(n)$ is $O(g(n))$ (read ``big-O of g'') if and only
+      if there are positive real numbers $c$ and $n_0$ such that $0 \leq f(n) \leq 
+      cg(n)$ for every $n \geq n_0$.
+    \end{remark*}
+
+    \begin{enumerate}
+      \item
+        \begin{claim*}
+          \vspace{-6.7mm}
+          $f(n) = n^2 + 5n + 20$ is $O(n^2)$.
+        \end{claim*}
+
+        \begin{proof*}
+          Consider $c = 2$ and $n_0 = 25$. Then for any $n \geq n_0$, $n^2 \geq 25n
+          \geq 5n + 20$. Since $n$ is positive, we also have $0 \leq n^2 + 5n + 20$.
+          Therefore, for any $n \geq n_0$, $0 \leq n^2 + 5n + 20 \leq n^2 + n^2 = 2n^2
+          = cn^2$. So, $n^2 + 5n + 20$ is $O(n^2)$.
+        \end{proof*}
+
+        \begin{claim*}
+          $g(n) = 1/n^2 + 2/n$ is $O(1/n)$.
+        \end{claim*}
+
+        \begin{proof*}
+          Consider $c = 3$ and $n_0 = 1$. Suppose that $n \geq n_0$. Then $n \geq 1$.
+          So $0 \leq 1/n \leq 1$. Since $n$ is positive, this implies that $0 \leq 1/n^2
+          \leq 1/n$. So then $0 \leq 1/n^2 + 2/n \leq 1/n + 2/n = 3/n = c \cdot 1/n$,
+          which is what we needed to show.
+        \end{proof*}
+
+      \item
+        Test \\
+    \end{enumerate}
+
+  \item[\textbf{Q2.}]
+    Consider the following algorithm which yields the product of two $n-$digit numbers:
+    \vspace{-6mm}
+    \begin{center}
+      \begin{minipage}{.99\linewidth}
+        \begin{algorithm}[H]
+          \caption{$\textsc{multiply}(a,b)$}\label{alg:multiply}
+          \begin{algorithmic}
+            \State $x \gets \textsc{Square}(a/2+b/2)$
+            \State $y \gets \textsc{Square}(a/2-b/2)$
+            \State $z \gets x - y$
+            \State \Return{$z$}
+          \end{algorithmic}
+        \end{algorithm}
+      \end{minipage}
+    \end{center}
+
+    \begin{claim*}
+      Algorithm \textbf{\ref{alg:multiply}} is correct and produces the desired product $ab$
+      in $O(n\log_{}n)$ time.
+    \end{claim*}
+
+    \begin{proof*}
+      The proof is almost trivial, relying on the observation that Algorithm \textbf{\ref{alg:multiply}}
+      always terminates with state $z$. Now state $z$ from the preceeding assignment is the
+      difference $x - y$, which coincidently in turn is:
+      \begin{align*}
+        x -y 
+          &= \bigg(\dfrac{a}{2} + \dfrac{b}{2}\bigg)^2 - \bigg(\dfrac{a}{2} - \dfrac{b}{2}\bigg)^2 \\
+          &= \cancel{\bigg(\dfrac{a}{2}\bigg)^2} + 2\bigg(\dfrac{a}{2}\bigg)\bigg(\dfrac{b}{2}\bigg) + \cancel{\bigg(\dfrac{b}{2}\bigg)^2}
+             -\cancel{\bigg(\dfrac{a}{2}\bigg)^2} + 2\bigg(\dfrac{a}{2}\bigg)\bigg(\dfrac{b}{2}\bigg) - \cancel{\bigg(\dfrac{b}{2}\bigg)^2} \\
+          &= 4\bigg(\dfrac{a}{2}\bigg)\bigg(\dfrac{b}{2}\bigg) \\
+          &= ab
+      \end{align*}
+      which is what we need to show! \\
+
+      Now that we have established the algorithm correctness, we show its running time $T_M(n)$
+      belongs to a collection of functions whose rate of growth are no larger than $n\log_{} n$.
+      To do this, we observe that there are two calls to the \textsc{Square} subroutine (each of
+      $n\log_{}n$ cost!), plus three assignments and a return statement which amount to some constant
+      amount of work. So,
+
+      \[
+        T_M(n) = 2T_S(n) + O(1) = 2O(n\log_{}n) + O(1) = O(n\log_{}n).
+      \]
+
+      The last equality follows from the fact that $O(1)$ is also $O(n\log_{}n)$, so we get
+      $3O(n\log_{}n) = O(n\log_{}n)$ as desired!
+    \end{proof*}
+
+  \item[\textbf{Q3.}]
+  \item[\textbf{Q4.}]
+    \begin{enumerate}
+      \item 
+        Let $\bm{X}$ be a random variable representing the total number of heads on $k$
+        trials. Then $\bm{X} \sim \text{Bin}(k, 1/2)$. So, $\mathbb{P}(\bm{X} = 1) = 
+        {}_kC_1(1/2)(1/2)^{k-1} = k/2^k$. \\
+
+      \item
+        $\mathbb{P}(\text{all $k$ boxes get distinct colors}) = \dfrac{{}_kC_1}{k} \cdot 
+        \dfrac{{}_{k-1}C_1}{k} \cdot \dfrac{{}_{k-2}C_1}{k} \cdots \dfrac{{}_1C_1}{k} =
+        \dfrac{k!}{k^k}$. \\
+
+      \item
+        Let $\bm{X}$ represent the length of the sequence of rolls until a $1$ is seen.
+        Then, $\bm{X}$ follows a geometric distribution with pmf $\mathbb{P}(\bm{X} = k)
+        = \left(1/6\right) \left(5/6\right)^{k-1}$. So,
+        \[
+          \mathbb{E}(\bm{X})
+            = \dsum_{k=1}^{\infty} k\ \mathbb{P}(\bm{X} = k)
+            = \dsum_{k=1}^{\infty} k \left(\dfrac{1}{6}\right) \left(\dfrac{5}{6}\right)^{k-1}
+            = \dfrac{1}{6} \dsum_{k=1}^{\infty} k \left(\dfrac{5}{6}\right)^{k-1}
+            = \dfrac{1}{6} \left(1-\dfrac{5}{6} \right)^{-2}
+            = 6.
+       \]
+        The required number of rolls to observe a $1$ with probability greater than $99/100$
+        is obtained by enforcing the inequality: 
+        \[
+          \dsum_{k=1}^{n}\mathbb{P}(\bm{X} = k) 
+            = \dsum_{k=1}^{n} \left(\dfrac{1}{6}\right) \left(\dfrac{5}{6}\right)^{k-1}
+            = \dfrac{1}{6} \dsum_{k=1}^{n} \left(\dfrac{5}{6}\right)^{k-1} > \dfrac{99}{100}.
+        \]
+        Simplyfying the latter expression, we get: 
+        \[
+          1 - \left(\dfrac{5}{6}\right)^{n} > \dfrac{99}{100} \implies n > \dfrac{\ln(100)}
+          {\ln(6) - \ln(5)} \approx 25.26.
+        \]
+        So, at least $n = 26$ rolls are necessary!
+    \end{enumerate}
+
+  \bigskip
+
+  \item[\textbf{Q5.}]
+    \begin{enumerate}
+      \item
+        % \begin{remark*}
+        %   If $\bm{X}$ is a r.v. with distribution $\text{Bin}(N, p)$, then provided $N$ is large
+        %   enough, $\mathcal{N}(\mu, \sigma^2)$ is a good approximation for $\text{Bin}(N, p)$
+        %   where $\mu = p$ and $\sigma^2 = np(1-p)$. \\
+        % \end{remark*}
+
+        From the problem statement it is evident that $\bm{H_1}$ and $\bm{H_2}$ are independent,
+        identically distributed random variables with $\bm{H_1} \sim \text{Bin}(N, 1/2)$ and
+        $\bm{H_2} \sim \text{Bin}(N, 51/100)$.  Assuming $N$ is sufficiently large, we model 
+        $\bm{H_1}$ and $\bm{H_2}$ as normal distributions:
+        \[
+          \bm{H_1} \sim \mathcal{N}\left(\dfrac{N}{2}, \dfrac{N}{4}\right) \quad \text{and} \quad
+          \bm{H_2} \sim \mathcal{N}\left(\dfrac{51}{100}N, \dfrac{51}{100}\dfrac{49}{100}N\right)
+        \]
+
+        Since $\bm{H_1}$ and $\bm{H_2}$ are independent normal, their difference $\bm{H_2} - \bm{H_1}$
+        will also be normal:
+        \[
+          \bm{H_2} - \bm{H_1} \sim \mathcal{N}\left(\dfrac{N}{100}, \dfrac{N}{4} + \dfrac{51}{100}
+          \dfrac{49}{100}N\right)
+        \]
+        % Recall, we are interested in a sufficiently large $N$ such that $\mathbb{P}(\bm{H_2} - \bm{H_1}
+        % \geq 1) = 1$. Running a few experiments for varying values of $N$, we find $N = 67$ to be a
+        % suitable choice.
+        \begin{figure}[H]
+          \centering
+          \begin{tikzpicture}
+            \definecolor{red}{HTML}{dc3522}
+            \definecolor{gray}{HTML}{d4d4d4}
+            \definecolor{green}{HTML}{008700}
+            \begin{axis}[
+              xlabel={$N$},
+              ylabel={$\mathbb{P}(\bm{H_2}-\bm{H_1}\geq1)$},
+              legend cell align={left},
+              legend style={
+                fill opacity=0.8,
+                draw opacity=1,
+                text opacity=1,
+                at={(0.97,0.03)},
+                anchor=south east,
+              },
+              tick align=outside,
+              tick pos=left,
+              x grid style={gray, dotted},
+              xmajorgrids,
+              xtick style={color=black},
+              y grid style={gray, dotted},
+              ymajorgrids,
+              ytick style={color=black},
+            ]
+              % \addplot[very thick, color=red] table[col sep=comma]{data/hw0-sim.csv};
+              \addlegendentry{$\mathbb{P}(\bm{H_2}-\bm{H_1}\geq1)$}
+            \end{axis}
+          \end{tikzpicture}
+        \end{figure}
+
+      \item
+        By linearity of expectations, $\mathbb{E}(\bm{H_2} - \bm{H_1}) = \mathbb{E}(\bm{H_2})
+        - \mathbb{E}(\bm{H_1}) = 25\left(\dfrac{51}{100} \right) - 25\left(\dfrac{1}{2}\right)
+        = \dfrac{1}{4}.$ \\
+
+      \item 
+        By Markov Inequality, $\mathbb{P}(\bm{H_2} - \bm{H_1} \geq 1) \leq \mathbb{E}(\bm{H_2}
+        - \bm{H_1})$
+    \end{enumerate}
+
+  \item[\textbf{Q6.}]
+    Consider the following algorithm which returns (the indices of) a triplet with zero sum in
+    a collection of intengers $A[1 \ldots n]$.
+    \vspace{-6mm}
+    \begin{center}
+      \begin{minipage}{.99\linewidth}
+        \begin{algorithm}[H]
+          \caption{$\textsc{find-triplet}(A)$}\label{alg:find-triplet}
+          \begin{algorithmic}
+            \State $n \gets$ \Call{\bfseries size}{$A$}
+            \If{$n < 3$}
+              \State \Return{none}
+            \EndIf
+            \State \Call{\bfseries sort}{$A$}
+            \For{i}{1}{n-2}
+              \State $j \gets i + 1$
+              \State $k \gets n$
+              \While{$j < k$}
+                \If{$A[i] + A[j] + A[k] < 0$}
+                  \State $j \gets j + 1$
+                \ElsIf{$A[i] + A[j] + A[k] > 0$}
+                  \State $k \gets k - 1$
+                \Else
+                  \State \Return{$i,j,k$}
+                \EndIf
+              \EndWhile
+            \EndFor
+            \State \Return{none}
+          \end{algorithmic}
+        \end{algorithm}
+      \end{minipage}
+    \end{center}
+
+    \begin{claim*}
+      $T(n)$ for the ``\textsc{find-triplet}'' algorithm is $O(n^2)$.
+    \end{claim*}
+
+    \begin{proof*}
+      The proof is almost trivial, relying on the observation that Algorithm \textbf{\ref{alg:find-triplet}}
+      always terminates with state $z$. Now state $z$ from the preceeding assignment is the
+      difference $x - y$, which coincidently in turn is:
+    \end{proof*}
+\end{enumerate}
+\end{document}

@@ -1,0 +1,173 @@
+\documentclass[10pt, letterpaper]{article}
+\input{preamble}
+\newcommand{\argmax}{\arg\!\max}
+
+\begin{document}
+\header{CS $6150$}{Filemon Mateus}{Midterm \#\ $1$}{Review}{\today}
+\section{Heaps}
+\begin{minipage}{\linewidth}
+  \begin{algorithm}[H]
+    \begin{algorithmic}[1]
+      \Procedure{Heap-Insert}{$A, n, x$}
+        \State $n \gets n + 1$
+        \State $i \gets n$
+        \State $A[i] \gets x$
+        \While{$(i > 1)$ \textbf{and} $(A[\textsc{Parent}(i)] > A[i])$}
+          \State $\textsc{Swap}(A[\textsc{Parent}(i)], A[i])$
+          \State $i \gets \textsc{Parent}(i)$
+        \EndWhile
+      \EndProcedure
+    \end{algorithmic}
+  \end{algorithm}
+\end{minipage}
+\begin{minipage}{\linewidth}
+  \begin{algorithm}[H]
+    \begin{algorithmic}[1]
+      \Procedure{Heap-Extract-Max}{$A, n$}
+        \If{$n < 1$}
+          \State \textsc{Error}("heap underflow")
+        \EndIf
+        \State $x \gets A[1]$
+        \State $A[1] \gets A[n]$
+        \State $n \gets n - 1$
+        \State $\textsc{Max-Heapify}(A, n)$ \Comment{here is where we fix, the partial order heap property}
+        \State \Return $x$
+      \EndProcedure
+    \end{algorithmic}
+  \end{algorithm}
+\end{minipage}
+\begin{minipage}{\linewidth}
+  \begin{algorithm}[H]
+    \begin{algorithmic}[1]
+      \Procedure{Max-Heapify}{$A, n$}
+        \State $\textsc{Done} \gets \textsc{false}$
+        \State $i \gets 1$
+        \Repeat
+          \State $l \gets \textsc{Left}(i)$
+          \State $r \gets \textsc{Right}(i)$
+          \State $j \gets \argmax_{i,l,r} A$
+          \If{$i \neq j$}
+            \State $\textsc{Swap}(A[i], A[j])$
+          \Else
+            \State $\textsc{Done} \gets \textsc{true}$
+          \EndIf
+          \State $i \gets j$
+        \Until{\textsc{Done}}
+      \EndProcedure
+    \end{algorithmic}
+  \end{algorithm}
+\end{minipage}
+\begin{minipage}{\linewidth}
+  \begin{algorithm}[H]
+    \begin{algorithmic}[1]
+      \Procedure{Max-Heap-Increase-Key}{$A, n, i, k$}
+        \If{$k < A[i]$}
+          \State \textsc{Error}("new key is less than current key.")
+        \EndIf
+        \State $A[i] \gets k$
+        \While{$(i > 1)$ \textbf{and} $(A[\textsc{Parent}(i)] < A[i])$}
+          \State \textsc{Swap}($A[\textsc{Parent}(i)], A[i]$)
+          \State $i \gets \textsc{Parent}(i)$
+        \EndWhile
+      \EndProcedure
+    \end{algorithmic}
+  \end{algorithm}
+\end{minipage}
+\section{Binary Search Trees}
+\begin{minipage}{\linewidth}
+  \begin{algorithm}[H]
+    \begin{algorithmic}[1]
+      \Procedure{Tree-Successor}{$v$}
+        \If{$v.right \neq \textsc{nil}$}
+          \State \Return $\textsc{Tree-Min}(v.right)$
+        \EndIf
+        \State $u \gets v.parent$
+        \While{$u \neq \textsc{nil}$ \textbf{and} $u.right = v$}
+          \State $v \gets u$
+          \State $u \gets u.parent$
+        \EndWhile
+        \State \Return u
+      \EndProcedure
+    \end{algorithmic}
+  \end{algorithm}
+\end{minipage}
+\begin{minipage}{\linewidth}
+  \begin{algorithm}[H]
+    \begin{algorithmic}[1]
+      \Procedure{Tree-Predecessor}{$v$}
+        \If{$v.left \neq \textsc{nil}$}
+          \State \Return $\textsc{Tree-Max}(v.left)$
+        \EndIf
+        \State $u \gets v.parent$
+        \While{$u \neq \textsc{nil}$ \textbf{and} $u.right \neq v$}
+          \State $v \gets u$
+          \State $u \gets u.parent$
+        \EndWhile
+        \State \Return u
+      \EndProcedure
+    \end{algorithmic}
+  \end{algorithm}
+\end{minipage}
+\begin{minipage}{\linewidth}
+  \begin{algorithm}[H]
+    \begin{algorithmic}[1]
+      \Procedure{Find-Maximum-Subarray}{$A, p, q$}
+        \If{$p = q$}
+          \State \Return $(p, q, A[p])$
+        \EndIf
+        \State $m \gets \floor{(p + q) / 2}$
+        \State $(L_{min}, L_{max}, L_{sum}) \gets \textsc{Find-Maximum-Subarray}(A, p, m)$
+        \State $(R_{min}, R_{max}, R_{sum}) \gets \textsc{Find-Maximum-Subarray}(A, m+1, q)$
+        \State $(C_{min}, C_{max}, C_{sum}) \gets \textsc{Find-Max-Crossing-Subarray}(A, p, m, q)$
+        \If{$(L_{sum} \geq R_{sum})$ \textbf{and} $(L_{sum} \geq C_{sum})$}
+          \State \Return $(L_{min}, L_{max}, L_{sum})$
+        \ElsIf{$(R_{sum} \geq L_{sum})$ \textbf{and} $(R_{sum} \geq C_{sum})$}
+          \State \Return $(R_{min}, R_{max}, R_{sum})$
+        \Else
+          \State \Return $(C_{min}, C_{max}, C_{sum})$
+        \EndIf
+      \EndProcedure
+    \end{algorithmic}
+  \end{algorithm}
+\end{minipage}
+\begin{minipage}{\linewidth}
+  \begin{algorithm}[H]
+    \begin{algorithmic}[1]
+      \Procedure{Range-Minimum}{$x_L, x_R$}
+        \State $u \gets \textsc{lca}(x_L, x_R)$
+        \State $x \gets u.data$
+        \State $v \gets u.left$
+        \While{$v \neq \textsc{nil}$}
+          \If{$x_L < v.key$}
+            \State $x \gets \textsc{Min}(x, v.right.min, v.data)$
+            \State $v \gets v.left$
+          \EndIf
+          \If{$x_L > v.key$}
+            \State $v \gets v.right$
+          \EndIf
+          \If{$x_L = v.key$}
+            \State $x \gets \textsc{Min}(x, v.right.min, v.data)$
+            \State $v \gets \textsc{nil}$
+          \EndIf
+        \EndWhile
+        \State
+        \State $v \gets u.right$
+        \While{$v \neq \textsc{nil}$}
+          \If{$x_R < v.key$}
+            \State $v \gets v.left$
+          \EndIf
+          \If{$x_R > v.key$}
+            \State $x \gets \textsc{Min}(x, v.data, v.left.min)$
+            \State $v \gets v.right$
+          \EndIf
+          \If{$x_R = v.key$}
+            \State $x \gets \textsc{Min}(x, v.data, v.right.min)$
+            \State $v \gets \textsc{nil}$
+          \EndIf
+        \EndWhile
+        \State \Return $x$
+      \EndProcedure
+    \end{algorithmic}
+  \end{algorithm}
+\end{minipage}
+\end{document}
